@@ -17,5 +17,4 @@ RUN apk --no-cache update \
         libpng \
         libpng-dev && \
     docker-php-ext-configure gd --enable-gd-native-ttf --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/ && \
-    docker-php-ext-install -j$(getconf _NPROCESSORS_ONLN) gd && \
-    exit 1
+    docker-php-ext-install -j$(getconf _NPROCESSORS_ONLN) gd
