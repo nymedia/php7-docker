@@ -1,6 +1,9 @@
 FROM drupaldocker/php:7.3-cli-2.x
 MAINTAINER nymedia
 
+# Fix zip on php 7.3
+RUN apk add --no-cache libzip-dev
+
 # fix work iconv library with alpine
 RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ --allow-untrusted gnu-libiconv icu-dev
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
