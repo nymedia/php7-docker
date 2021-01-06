@@ -19,3 +19,7 @@ before_script:
 
 script:
   - docker build -f ./${DOCKERPATH}/${DOCKERFILE} -t ${DOCKERPATH} ./${DOCKERPATH}
+
+after_script:
+  - docker images
+  - docker run --rm -ti ${DOCKERPATH} php -i
