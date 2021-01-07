@@ -21,6 +21,11 @@ jobs:
         dockerfile:
           - "Dockerfile-fpm"
           - "Dockerfile-cli"
+    services:
+      registry:
+        image: registry:2
+        ports:
+          - 5000:5000
     steps:
       - uses: actions/checkout@v2
       -
@@ -33,11 +38,11 @@ jobs:
         with:
           context: ./${{ matrix.context }}
           file: ${{ matrix.context }}/${{ matrix.dockerfile }}
-          push: false
-          tags: test:latest
+          push: true
+          tags: localhost:5000/test:latest
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
       -
         name: Check php info
-        run: docker run --rm -i test php -i
+        run: docker run --rm -i localhost:5000/test:latest php -i
