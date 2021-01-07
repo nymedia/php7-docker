@@ -40,4 +40,4 @@ jobs:
         run: echo ${{ steps.docker_build.outputs.digest }}
       -
         name: Check php info
-        run: docker run --rm -ti test php -i
+        run: docker run --rm -i test php -i
