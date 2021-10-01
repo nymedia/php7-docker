@@ -49,11 +49,18 @@ jobs:
         name: Check php info
         run: docker run --rm -i localhost:5000/local/test:latest php -i
       -
+        name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+        if: ${{ github.event_name == 'push' }}
+      -
         name: Push
         uses: docker/build-push-action@v2
         with:
           context: ./${{ matrix.context }}
-          file: ${{ matrix.context }}/Dockerfile-${{ matrix.image_version }}
+          file: ${{ matrix.context }}/Dockerfile-${{ matrix.dockerfile }}
           push: true
           tags: nymediaas/php7-docker:${{ matrix.context }}-${{ matrix.dockerfile }}
         if: ${{ github.event_name == 'push' }}
