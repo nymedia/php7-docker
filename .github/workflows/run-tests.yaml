@@ -19,8 +19,8 @@ jobs:
           - "7.3"
           - "7.4"
         dockerfile:
-          - "Dockerfile-fpm"
-          - "Dockerfile-cli"
+          - "fpm"
+          - "cli"
     services:
       registry:
         image: registry:2
@@ -39,7 +39,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./${{ matrix.context }}
-          file: ${{ matrix.context }}/${{ matrix.dockerfile }}
+          file: ${{ matrix.context }}/Dockerfile-${{ matrix.dockerfile }}
           push: true
           tags: localhost:5000/local/test:latest
       -
@@ -48,3 +48,12 @@ jobs:
       -
         name: Check php info
         run: docker run --rm -i localhost:5000/local/test:latest php -i
+      -
+        name: Push
+        uses: docker/build-push-action@v2
+        with:
+          context: ./${{ matrix.context }}
+          file: ${{ matrix.context }}/Dockerfile-${{ matrix.image_version }}
+          push: true
+          tags: nymediaas/php7-docker:${{ matrix.context }}-${{ matrix.dockerfile }}
+        if: ${{ github.event_name == 'push' }}
